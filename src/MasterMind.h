@@ -36,7 +36,6 @@ class MasterMind
 		MasterMind(t_colorSequnence& masterSequence);
 		virtual ~MasterMind();
 
-		void genMasterSequence(void);
 		const score guess(const uint8_t& position, const color guess) const;
 
 	private:

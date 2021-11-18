@@ -10,7 +10,7 @@
 
 MasterMind::MasterMind()
 {
-	genMasterSequence();
+	genNewMasterSequence();
 }
 
 MasterMind::MasterMind(t_colorSequnence& masterSequence) :
@@ -24,7 +24,7 @@ MasterMind::~MasterMind()
 {
 }
 
-void MasterMind::genMasterSequence(void)
+void MasterMind::genNewMasterSequence(void)
 {
 	m_masterSequence.clear();
 
