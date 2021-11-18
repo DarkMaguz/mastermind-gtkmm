@@ -7,7 +7,7 @@ AC_PROG_CC
 
 PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.24.2])
 
-AX_PTHREAD()
+#AX_PTHREAD()
 
 AC_CONFIG_FILES([
  Makefile
