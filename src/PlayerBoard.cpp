@@ -50,9 +50,9 @@ void PlayerBoard::buildColorMenu(void)
 {
 	// Connect popup menu action signals to onSelectColor parsing the chosen color.
 	auto refActionGroup = Gio::SimpleActionGroup::create();
-	refActionGroup->add_action("red", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), "red"));
-	refActionGroup->add_action("green", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), "green"));
-	refActionGroup->add_action("blue", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), "blue"));
+	refActionGroup->add_action("red", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::RED));
+	refActionGroup->add_action("green", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::GREEN));
+	refActionGroup->add_action("blue", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::BLUE));
 	insert_action_group("color-menu", refActionGroup);
 
 	// Load popup menu template from xml file.
@@ -116,17 +116,17 @@ bool PlayerBoard::onGuessClicked(GdkEventButton* buttonEvent, const uint8_t gues
     return false;
 }
 
-void PlayerBoard::onSelectColor(const Glib::ustring color)
+void PlayerBoard::onSelectColor(const MasterMind::color color)
 {
 	std::cout << "m_currentGuess: " << std::to_string(m_currentGuess) << std::endl;
-	std::cout << "onSelectColor: " << color << std::endl;
+	std::cout << "onSelectColor: " << std::to_string(color) << std::endl;
 
 	GuessButtonInfo *gButton = m_guessButtons.at(m_currentGuess);
 
   // Create CSS prvider.
 	auto css = Gtk::CssProvider::create();
-			"{background-image: none; background-color: " + color + ";}");
 	css->load_from_data("#" + m_playerName + "-guessButton" + std::to_string(m_currentGuess) +
+			"{background-image: none; background-color: " + cssColorMap[color] + ";}");
 
 	// Set the chosen color.
 	gButton->styleContext->add_provider_for_screen(Gdk::Screen::get_default(),
@@ -134,4 +134,6 @@ void PlayerBoard::onSelectColor(const Glib::ustring color)
 
 	// Disconnect signal so that the button wont react to clicks anymore.
 	gButton->connection.disconnect();
+
+	m_masterMind->guess(m_currentGuess, color);
 }

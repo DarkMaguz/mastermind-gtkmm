@@ -12,17 +12,17 @@
 
 TEST(MasterMind, guess)
 {
-	t_colorSequnence masterSequence = {
-			color::BLACK,
-			color::BLACK,
-			color::BLUE,
-			color::WHITE,
-			color::GREEN
+	MasterMind::t_colorSequnence masterSequence = {
+			MasterMind::BLACK,
+			MasterMind::BLACK,
+			MasterMind::BLUE,
+			MasterMind::WHITE,
+			MasterMind::GREEN
 	};
 	MasterMind mm(masterSequence);
-	EXPECT_EQ(score::HIT, mm.guess(0, color::BLACK));
-	EXPECT_EQ(score::MISS, mm.guess(0, color::GREEN));
-	EXPECT_EQ(score::NONE, mm.guess(0, color::RED));
+	EXPECT_EQ(MasterMind::HIT, mm.guess(0, MasterMind::BLACK));
+	EXPECT_EQ(MasterMind::MISS, mm.guess(0, MasterMind::GREEN));
+	EXPECT_EQ(MasterMind::NONE, mm.guess(0, MasterMind::RED));
 }
 
 int main(int argc, char **argv)

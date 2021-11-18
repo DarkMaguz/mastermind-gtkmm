@@ -35,7 +35,7 @@ void MasterMind::genNewMasterSequence(void)
 		m_masterSequence.push_back(color(distribution(generator)));
 }
 
-const score MasterMind::guess(const uint8_t& position, const color guess) const
+const MasterMind::score MasterMind::guess(const uint8_t& position, const color guess) const
 {
 	if (position > 4)
 		throw "Invalid position!\n\tGot " + std::to_string(position) + " expected position to be in range 0-4";

@@ -11,31 +11,38 @@
 #include <vector>
 #include <string>
 #include <random>
+#include <map>
 
-enum color {
-	RED = 1,
-	GREEN,
-	BLUE,
-	BLACK,
-	WHITE,
-	YELLOW
+const std::string cssColorMap[] = {
+	"red", "green", "blue", "yellow", "black", "white"
 };
-
-enum score {
-	HIT = 1,
-	MISS,
-	NONE
-};
-
-typedef std::vector<color> t_colorSequnence;
 
 class MasterMind
 {
+	public:
+		enum color {
+			RED = 0,
+			GREEN,
+			BLUE,
+			YELLOW,
+			BLACK,
+			WHITE
+		};
+
+		enum score {
+			HIT = 1,
+			MISS,
+			NONE
+		};
+
+		typedef std::vector<color> t_colorSequnence;
+
 	public:
 		MasterMind();
 		MasterMind(t_colorSequnence& masterSequence);
 		virtual ~MasterMind();
 
+		void genNewMasterSequence(void);
 		const score guess(const uint8_t& position, const color guess) const;
 
 	private:
