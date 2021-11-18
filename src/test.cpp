@@ -27,12 +27,12 @@ TEST(MasterMind, guess)
 
 TEST(MasterMind, cssColorMap)
 {
-	EXPECT_EQ(cssColorMap[MasterMind::RED], "red");
-	EXPECT_EQ(cssColorMap[MasterMind::GREEN], "green");
-	EXPECT_EQ(cssColorMap[MasterMind::BLUE], "blue");
-	EXPECT_EQ(cssColorMap[MasterMind::YELLOW], "yellow");
-	EXPECT_EQ(cssColorMap[MasterMind::BLACK], "black");
-	EXPECT_EQ(cssColorMap[MasterMind::WHITE], "white");
+	EXPECT_EQ(MasterMind::cssColorMap[MasterMind::RED], "red");
+	EXPECT_EQ(MasterMind::cssColorMap[MasterMind::GREEN], "green");
+	EXPECT_EQ(MasterMind::cssColorMap[MasterMind::BLUE], "blue");
+	EXPECT_EQ(MasterMind::cssColorMap[MasterMind::YELLOW], "yellow");
+	EXPECT_EQ(MasterMind::cssColorMap[MasterMind::BLACK], "black");
+	EXPECT_EQ(MasterMind::cssColorMap[MasterMind::WHITE], "white");
 }
 
 int main(int argc, char **argv)

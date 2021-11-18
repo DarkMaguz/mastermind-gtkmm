@@ -8,6 +8,10 @@
 #include "MasterMind.h"
 #include <algorithm>
 
+std::array<const std::string, 6> const MasterMind::cssColorMap = {
+			"red", "green", "blue", "yellow", "black", "white"
+		};
+
 MasterMind::MasterMind()
 {
 	genNewMasterSequence();

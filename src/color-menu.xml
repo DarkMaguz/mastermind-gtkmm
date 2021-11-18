@@ -1,18 +1,7 @@
 <interface>
 	<menu id='color-menu'>
 		<section>
-			<item>
-				<attribute name='label'>red</attribute>
-				<attribute name='action'>color-menu.red</attribute>
-			</item>
-			<item>
-				<attribute name='label'>green</attribute>
-				<attribute name='action'>color-menu.green</attribute>
-			</item>
-			<item>
-				<attribute name='label'>blue</attribute>
-				<attribute name='action'>color-menu.blue</attribute>
-			</item>
+			$menuItems$
 		</section>
 	</menu>
 </interface>

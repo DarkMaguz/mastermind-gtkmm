@@ -50,9 +50,10 @@ void PlayerBoard::buildColorMenu(void)
 {
 	// Connect popup menu action signals to onSelectColor parsing the chosen color.
 	auto refActionGroup = Gio::SimpleActionGroup::create();
-	refActionGroup->add_action("red", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::RED));
-	refActionGroup->add_action("green", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::GREEN));
-	refActionGroup->add_action("blue", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::BLUE));
+
+	for (uint8_t i = 0; i < MasterMind::cssColorMap.size(); i++)
+		refActionGroup->add_action(MasterMind::cssColorMap[i],
+				sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::color(i)));
 	insert_action_group("color-menu", refActionGroup);
 
 	// Load popup menu template from xml file.
@@ -60,6 +61,26 @@ void PlayerBoard::buildColorMenu(void)
 	auto ioc = Glib::IOChannel::create_from_file("color-menu.xml", "r");
 	ioc->read_to_end(uiColorMenu);
 	ioc->close();
+
+	// Add items to the menu.
+	Glib::ustring uiColorMenuItems;
+	for (uint8_t i = 0; i < MasterMind::cssColorMap.size(); i++)
+	{
+		auto color = MasterMind::cssColorMap[i];
+		uiColorMenuItems.append(
+				"<item>"
+				"<attribute name='label'>"
+						+ color +
+					"</attribute>"
+					"<attribute name='action'>"
+						"color-menu." + color +
+					"</attribute>"
+				"</item>"
+				);
+	}
+	Glib::ustring templateName = "$menuItems$";
+	auto templatePos = uiColorMenu.find(templateName);
+	uiColorMenu.replace(templatePos, templateName.size(), uiColorMenuItems);
 
 	// Add color menu to builder.
 	try
@@ -126,7 +147,7 @@ void PlayerBoard::onSelectColor(const MasterMind::color color)
   // Create CSS prvider.
 	auto css = Gtk::CssProvider::create();
 	css->load_from_data("#" + m_playerName + "-guessButton" + std::to_string(m_currentGuess) +
-			"{background-image: none; background-color: " + cssColorMap[color] + ";}");
+			"{background-image: none; background-color: " + MasterMind::cssColorMap[color] + ";}");
 
 	// Set the chosen color.
 	gButton->styleContext->add_provider_for_screen(Gdk::Screen::get_default(),

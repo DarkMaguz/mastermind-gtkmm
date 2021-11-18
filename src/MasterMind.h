@@ -11,11 +11,7 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <map>
-
-const std::string cssColorMap[] = {
-	"red", "green", "blue", "yellow", "black", "white"
-};
+#include <array>
 
 class MasterMind
 {
@@ -36,6 +32,8 @@ class MasterMind
 		};
 
 		typedef std::vector<color> t_colorSequnence;
+
+		static std::array<const std::string, 6> const cssColorMap;
 
 	public:
 		MasterMind();
