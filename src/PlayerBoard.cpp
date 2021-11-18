@@ -53,24 +53,13 @@ void PlayerBoard::buildColorMenu(void)
 	refActionGroup->add_action("red", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), "red"));
 	refActionGroup->add_action("green", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), "green"));
 	refActionGroup->add_action("blue", sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), "blue"));
-	insert_action_group(m_playerName, refActionGroup);
+	insert_action_group("color-menu", refActionGroup);
 
 	// Load popup menu template from xml file.
 	Glib::ustring uiColorMenu;
 	auto ioc = Glib::IOChannel::create_from_file("color-menu.xml", "r");
 	ioc->read_to_end(uiColorMenu);
 	ioc->close();
-
-	// Replace $playerName$ with the actual player name.
-	Glib::ustring pName = "$playerName$";
-	std::string::size_type pos = 0u;
-	while ((pos = uiColorMenu.find("$playerName$", pos)) != std::string::npos)
-	{
-		uiColorMenu.replace(pos, pName.length(), m_playerName);
-		pos += m_playerName.length();
-	}
-
-	std::cout << "uiColorMenu: " << uiColorMenu << std::endl;
 
 	// Add color menu to builder.
 	try
@@ -92,18 +81,11 @@ void PlayerBoard::buildColorMenu(void)
 	// Create guess buttons.
 	for (uint8_t i = 0; i < 5; i++)
 	{
-	  // Create CSS prvider.
-		auto css = Gtk::CssProvider::create();
-		css->load_from_data("#guessButton" + std::to_string(i) +
-				"{background-image: none; background-color: gray;}");
-
 		GuessButtonInfo* gButton = new GuessButtonInfo;
 
 		gButton->button = Gtk::make_managed<Gtk::Button>();
-		gButton->button->set_name("guessButton" + std::to_string(i));
+		gButton->button->set_name(m_playerName + "-guessButton" + std::to_string(i));
 		gButton->styleContext = gButton->button->get_style_context();
-		gButton->styleContext->add_provider_for_screen(Gdk::Screen::get_default(),
-				css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 		gButton->connection = gButton->button->signal_button_press_event()
 				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
 
@@ -143,8 +125,8 @@ void PlayerBoard::onSelectColor(const Glib::ustring color)
 
   // Create CSS prvider.
 	auto css = Gtk::CssProvider::create();
-	css->load_from_data("#guessButton" + std::to_string(m_currentGuess) +
 			"{background-image: none; background-color: " + color + ";}");
+	css->load_from_data("#" + m_playerName + "-guessButton" + std::to_string(m_currentGuess) +
 
 	// Set the chosen color.
 	gButton->styleContext->add_provider_for_screen(Gdk::Screen::get_default(),
