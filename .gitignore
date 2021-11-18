@@ -95,3 +95,4 @@ Makefile
 .deps
 tmp/
 src/mastermind
+src/test
