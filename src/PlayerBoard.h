@@ -28,7 +28,7 @@ class PlayerBoard : public Gtk::Frame
 		void begin(void);
 
 	private:
-		bool onGuessClicked(GdkEventButton* button_event, const uint8_t guessNumber);
+		void onGuessClicked(const uint8_t guessNumber);
 		void onSelectColor(const MasterMind::color color);
 
 		void buildColorMenu(void);

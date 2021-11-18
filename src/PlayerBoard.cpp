@@ -107,7 +107,7 @@ void PlayerBoard::buildColorMenu(void)
 		gButton->button = Gtk::make_managed<Gtk::Button>();
 		gButton->button->set_name(m_playerName + "-guessButton" + std::to_string(i));
 		gButton->styleContext = gButton->button->get_style_context();
-		gButton->connection = gButton->button->signal_button_press_event()
+		gButton->connection = gButton->button->signal_clicked()
 				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
 
 		m_guessButtons.push_back(gButton);
@@ -116,25 +116,20 @@ void PlayerBoard::buildColorMenu(void)
 	}
 }
 
-bool PlayerBoard::onGuessClicked(GdkEventButton* buttonEvent, const uint8_t guessNumber)
+void PlayerBoard::onGuessClicked(const uint8_t guessNumber)
 {
-  if( (buttonEvent->type == GDK_DOUBLE_BUTTON_PRESS) && (buttonEvent->button == 1) )
-  {
-  	// Set the current guess needed by onSelectColor.
-  	m_currentGuess = guessNumber;
+	// Set the current guess needed by onSelectColor.
+	m_currentGuess = guessNumber;
 
-  	// Make sure the popup menu have something to attach to.
-    if(!m_pMenuPopup->get_attach_widget())
-      m_pMenuPopup->attach_to_widget(*this);
+	// Make sure the popup menu have something to attach to.
+  if(!m_pMenuPopup->get_attach_widget())
+    m_pMenuPopup->attach_to_widget(*this);
 
-    // Make the menu pop up.
-    if(m_pMenuPopup)
-      m_pMenuPopup->popup_at_pointer((GdkEvent*)buttonEvent);
+  // Make the menu pop up.
+  if(m_pMenuPopup)
+    m_pMenuPopup->popup_at_widget(m_guessButtons.at(guessNumber)->button,
+    		Gdk::GRAVITY_SOUTH, Gdk::GRAVITY_NORTH, nullptr);
 
-    return true;
-  }
-  else
-    return false;
 }
 
 void PlayerBoard::onSelectColor(const MasterMind::color color)
