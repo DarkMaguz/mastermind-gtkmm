@@ -25,6 +25,16 @@ TEST(MasterMind, guess)
 	EXPECT_EQ(MasterMind::NONE, mm.guess(0, MasterMind::RED));
 }
 
+TEST(MasterMind, cssColorMap)
+{
+	EXPECT_EQ(cssColorMap[MasterMind::RED], "red");
+	EXPECT_EQ(cssColorMap[MasterMind::GREEN], "green");
+	EXPECT_EQ(cssColorMap[MasterMind::BLUE], "blue");
+	EXPECT_EQ(cssColorMap[MasterMind::YELLOW], "yellow");
+	EXPECT_EQ(cssColorMap[MasterMind::BLACK], "black");
+	EXPECT_EQ(cssColorMap[MasterMind::WHITE], "white");
+}
+
 int main(int argc, char **argv)
 {
 	testing::InitGoogleTest(&argc, argv);
