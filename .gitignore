@@ -94,3 +94,4 @@ Makefile
 
 .deps
 tmp/
+src/mastermind
