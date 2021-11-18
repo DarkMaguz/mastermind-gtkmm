@@ -9,8 +9,11 @@
 #define SRC_MAINWINDOW_H_
 
 #include <gtkmm.h>
+
 #include <map>
+
 #include "PlayerBoard.h"
+#include "MasterMind.h"
 
 class MainWindow : public Gtk::Window
 {
@@ -24,9 +27,11 @@ class MainWindow : public Gtk::Window
 		Gtk::Box m_bordBox;
 		Gtk::Statusbar m_statusbar;
 
-		typedef std::pair<const Glib::ustring, PlayerBoard *> t_player;
+		typedef std::pair<const Glib::ustring, PlayerBoard*> t_player;
 
-		std::map<const Glib::ustring, PlayerBoard *>m_players;
+		std::map<const Glib::ustring, PlayerBoard*>m_players;
+
+		MasterMind m_masterMind;
 
 };
 

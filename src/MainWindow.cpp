@@ -6,6 +6,7 @@
  */
 
 #include "MainWindow.h"
+#include "MasterMind.h"
 
 MainWindow::MainWindow() :
 	m_mainBox(Gtk::ORIENTATION_VERTICAL),
@@ -18,8 +19,8 @@ MainWindow::MainWindow() :
 	m_mainBox.pack_start(m_bordBox, Gtk::PACK_EXPAND_WIDGET);
 	m_mainBox.pack_start(m_statusbar, Gtk::PACK_SHRINK);
 
-	t_player computerPlayer = t_player("Computer", Gtk::make_managed<PlayerBoard>("Computer"));
-	t_player humanPlayer = t_player("human", Gtk::make_managed<PlayerBoard>("human"));
+	t_player computerPlayer = t_player("Computer", Gtk::make_managed<PlayerBoard>("Computer", &m_masterMind));
+	t_player humanPlayer = t_player("human", Gtk::make_managed<PlayerBoard>("human", &m_masterMind));
 
 	m_players.insert(computerPlayer);
 	m_players.insert(humanPlayer);

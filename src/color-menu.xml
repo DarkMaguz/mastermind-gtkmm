@@ -3,15 +3,15 @@
 		<section>
 			<item>
 				<attribute name='label'>red</attribute>
-				<attribute name='action'>color-menu-popup.red</attribute>
+				<attribute name='action'>$playerName$.red</attribute>
 			</item>
 			<item>
 				<attribute name='label'>green</attribute>
-				<attribute name='action'>color-menu-popup.green</attribute>
+				<attribute name='action'>$playerName$.green</attribute>
 			</item>
 			<item>
 				<attribute name='label'>blue</attribute>
-				<attribute name='action'>color-menu-popup.blue</attribute>
+				<attribute name='action'>$playerName$.blue</attribute>
 			</item>
 		</section>
 	</menu>

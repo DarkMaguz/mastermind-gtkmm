@@ -9,8 +9,8 @@
 #define SRC_PLAYERBOARD_H_
 
 #include <gtkmm.h>
-
 #include <vector>
+#include "MasterMind.h"
 
 struct GuessButtonInfo
 {
@@ -22,7 +22,7 @@ struct GuessButtonInfo
 class PlayerBoard : public Gtk::Frame
 {
 	public:
-		PlayerBoard(const Glib::ustring& playerName);
+		PlayerBoard(const Glib::ustring& playerName, MasterMind *mm);
 		virtual ~PlayerBoard();
 
 		void begin(void);
@@ -46,6 +46,8 @@ class PlayerBoard : public Gtk::Frame
 
 		uint8_t m_currentGuess;
 		Glib::ustring m_playerName;
+
+		MasterMind* m_masterMind;
 };
 
 #endif /* SRC_PLAYERBOARD_H_ */
