@@ -10,11 +10,7 @@
 
 MasterMind::MasterMind()
 {
-	std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution(0, 4);
-
-	for (int i = 0; i < 5; i++)
-		m_masterSequence.push_back(color(distribution(generator)));
+	genMasterSequence();
 }
 
 MasterMind::MasterMind(t_colorSequnence& masterSequence) :
@@ -26,6 +22,17 @@ MasterMind::MasterMind(t_colorSequnence& masterSequence) :
 
 MasterMind::~MasterMind()
 {
+}
+
+void MasterMind::genMasterSequence(void)
+{
+	m_masterSequence.clear();
+
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> distribution(0, 4);
+
+	for (int i = 0; i < 5; i++)
+		m_masterSequence.push_back(color(distribution(generator)));
 }
 
 const score MasterMind::guess(const uint8_t& position, const color guess) const
