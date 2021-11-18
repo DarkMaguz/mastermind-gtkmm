@@ -1,0 +1,18 @@
+<interface>
+	<menu id='color-menu'>
+		<section>
+			<item>
+				<attribute name='label'>red</attribute>
+				<attribute name='action'>color-menu-popup.red</attribute>
+			</item>
+			<item>
+				<attribute name='label'>green</attribute>
+				<attribute name='action'>color-menu-popup.green</attribute>
+			</item>
+			<item>
+				<attribute name='label'>blue</attribute>
+				<attribute name='action'>color-menu-popup.blue</attribute>
+			</item>
+		</section>
+	</menu>
+</interface>
