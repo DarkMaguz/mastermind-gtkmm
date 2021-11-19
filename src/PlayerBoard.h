@@ -11,12 +11,12 @@
 #include <gtkmm.h>
 #include <vector>
 #include "MasterMind.h"
+#include "Peg.h"
 
 struct GuessButtonInfo
 {
-		Gtk::Button* button;
+		Peg* button;
 		sigc::connection connection;
-		Glib::RefPtr<Gtk::StyleContext> styleContext;
 };
 
 class PlayerBoard : public Gtk::Frame
@@ -34,7 +34,6 @@ class PlayerBoard : public Gtk::Frame
 		void buildColorMenu(void);
 
 		Gtk::Box m_playerVBox;
-		Gtk::Box m_playerHBox;
 
 		Gtk::ButtonBox m_guessButtonBox;
 		Gtk::ButtonBox m_scoreButtonBox;
@@ -48,6 +47,8 @@ class PlayerBoard : public Gtk::Frame
 		Glib::ustring m_playerName;
 
 		MasterMind* m_masterMind;
+
+		std::vector<MasterMind::score> m_score;
 };
 
 #endif /* SRC_PLAYERBOARD_H_ */

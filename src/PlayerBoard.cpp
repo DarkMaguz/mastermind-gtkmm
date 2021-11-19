@@ -6,6 +6,7 @@
  */
 
 #include "PlayerBoard.h"
+#include "ScorePeg.h"
 
 #include <iostream>
 #include <exception>
@@ -14,7 +15,6 @@
 PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 	Gtk::Frame(playerName),
 	m_playerVBox(Gtk::ORIENTATION_VERTICAL),
-	m_playerHBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_guessButtonBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_scoreButtonBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_refBuilder(Gtk::Builder::create()),
@@ -24,9 +24,15 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 {
 	set_label_align(0.25);
 
-	m_playerVBox.pack_start(m_playerHBox, Gtk::PACK_EXPAND_WIDGET, 5);
-	m_playerHBox.pack_start(m_guessButtonBox, Gtk::PACK_EXPAND_WIDGET, 5);
-	m_playerHBox.pack_start(m_scoreButtonBox, Gtk::PACK_EXPAND_WIDGET, 5);
+	// Force the boxes to stay in place even if scoreButtonBox is not shown.
+	m_playerVBox.set_homogeneous(true);
+	// Set the boxes in the center.
+	m_playerVBox.set_valign(Gtk::ALIGN_CENTER);
+	m_playerVBox.pack_start(m_guessButtonBox, Gtk::PACK_SHRINK, 5);
+	m_playerVBox.pack_start(m_scoreButtonBox, Gtk::PACK_SHRINK, 5);
+
+	// Add score left to right.
+	m_scoreButtonBox.set_halign(Gtk::ALIGN_START);
 
 	buildColorMenu();
 
@@ -104,9 +110,8 @@ void PlayerBoard::buildColorMenu(void)
 	{
 		GuessButtonInfo* gButton = new GuessButtonInfo;
 
-		gButton->button = Gtk::make_managed<Gtk::Button>();
+		gButton->button = Gtk::make_managed<Peg>();
 		gButton->button->set_name(m_playerName + "-guessButton" + std::to_string(i));
-		gButton->styleContext = gButton->button->get_style_context();
 		gButton->connection = gButton->button->signal_clicked()
 				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
 
@@ -134,22 +139,15 @@ void PlayerBoard::onGuessClicked(const uint8_t guessNumber)
 
 void PlayerBoard::onSelectColor(const MasterMind::color color)
 {
-	std::cout << "m_currentGuess: " << std::to_string(m_currentGuess) << std::endl;
-	std::cout << "onSelectColor: " << std::to_string(color) << std::endl;
-
 	GuessButtonInfo *gButton = m_guessButtons.at(m_currentGuess);
 
-  // Create CSS prvider.
-	auto css = Gtk::CssProvider::create();
-	css->load_from_data("#" + m_playerName + "-guessButton" + std::to_string(m_currentGuess) +
-			"{background-image: none; background-color: " + MasterMind::cssColorMap[color] + ";}");
-
-	// Set the chosen color.
-	gButton->styleContext->add_provider_for_screen(Gdk::Screen::get_default(),
-			css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
+	gButton->button->setColor(MasterMind::cssColorMap[color]);
 	// Disconnect signal so that the button wont react to clicks anymore.
 	gButton->connection.disconnect();
 
-	m_masterMind->guess(m_currentGuess, color);
+	MasterMind::score score = m_masterMind->guess(m_currentGuess, color);
+	m_score.push_back(score);
+	m_scoreButtonBox.add(*Gtk::make_managed<ScorePeg>(score));
+	//m_scoreButtonBox.set_visible(true);
+	m_scoreButtonBox.show_all_children();
 }
