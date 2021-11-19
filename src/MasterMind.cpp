@@ -57,3 +57,8 @@ const MasterMind::score MasterMind::guess(const uint8_t& position, const color g
 		return score::NONE;
 	}
 }
+
+const int8_t MasterMind::guessesLeft(void) const
+{
+	return 2 - m_guessCouter;
+}

@@ -42,9 +42,11 @@ class MasterMind
 
 		void genNewMasterSequence(void);
 		const score guess(const uint8_t& position, const color guess) const;
+		const int8_t guessesLeft(void) const;
 
 	private:
 		t_colorSequnence m_masterSequence;
+		int8_t m_guessCouter;
 };
 
 #endif /* SRC_MASTERMIND_H_ */
