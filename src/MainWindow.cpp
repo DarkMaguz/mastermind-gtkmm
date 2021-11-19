@@ -28,6 +28,8 @@ MainWindow::MainWindow() :
 	m_bordBox.pack_start(*computerPlayer.second, Gtk::PACK_EXPAND_WIDGET);
 	m_bordBox.pack_start(*humanPlayer.second, Gtk::PACK_EXPAND_WIDGET);
 
+	m_masterMind.restart();
+
 	add(m_mainBox);
 	show_all_children();
 	//computerPlayer.second->begin();

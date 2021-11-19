@@ -11,17 +11,26 @@
 #include "Peg.h"
 #include "MasterMind.h"
 
+struct rgbColor
+{
+	double red;
+	double green;
+	double blue;
+};
+
 class ScorePeg: public Peg
 {
 	public:
-		ScorePeg(const MasterMind::score& score);
+		ScorePeg();
 		virtual ~ScorePeg();
+
+		void setScore(const MasterMind::score& score);
 
 	protected:
 		virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
 	private:
-		const MasterMind::score m_score;
+		MasterMind::score m_score;
 };
 
 #endif /* SRC_SCOREPEG_H_ */

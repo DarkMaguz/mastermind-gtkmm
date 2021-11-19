@@ -13,6 +13,8 @@
 #include <random>
 #include <array>
 
+#include <sigc++/sigc++.h>
+
 class MasterMind
 {
 	public:
@@ -31,6 +33,12 @@ class MasterMind
 			NONE
 		};
 
+		enum state {
+			STOPED = 0,
+			INPROGRESS,
+			ENDED
+		};
+
 		typedef std::vector<color> t_colorSequnence;
 
 		static std::array<const std::string, 6> const cssColorMap;
@@ -40,13 +48,23 @@ class MasterMind
 		MasterMind(t_colorSequnence& masterSequence);
 		virtual ~MasterMind();
 
-		void genNewMasterSequence(void);
-		const score guess(const uint8_t& position, const color guess) const;
+		void restart(void);
+		const score guess(const uint8_t& position, const color guess);
+
 		const int8_t guessesLeft(void) const;
+		const state gameState(void) const;
+
+		sigc::signal<void, state> signalGameStateChanged(void);
 
 	private:
+		void changeState(const state& newState);
+		void genNewMasterSequence(void);
+
+		state m_gameState;
 		t_colorSequnence m_masterSequence;
 		int8_t m_guessCouter;
+
+		sigc::signal<void, state> m_signalGameStateChanged;
 };
 
 #endif /* SRC_MASTERMIND_H_ */

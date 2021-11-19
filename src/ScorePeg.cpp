@@ -7,8 +7,8 @@
 
 #include "ScorePeg.h"
 
-ScorePeg::ScorePeg(const MasterMind::score& score) :
-	m_score(score)
+ScorePeg::ScorePeg() :
+	m_score(MasterMind::NONE)
 {
 	show_all_children();
 }
@@ -17,20 +17,26 @@ ScorePeg::~ScorePeg()
 {
 }
 
+void ScorePeg::setScore(const MasterMind::score& score)
+{
+	m_score = score;
+	// Request redrawing of widget.
+	queue_draw();
+}
+
 bool ScorePeg::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	struct rgb {
-		double red;
-		double green;
-		double blue;
-	} color;
+	rgbColor color;
 
 	if (m_score == MasterMind::HIT)
-		color = {255, 255, 255};
+		color = {1., 1., 1.};
 	else if (m_score == MasterMind::MISS)
-		color = {0, 0, 0};
+		color = {0., 0., 0.};
 	else
-		set_visible(false);
+	{
+		reset_style();
+		return false;
+	}
 
   // This is where we draw on the window
   Gtk::Allocation allocation = get_allocation();
@@ -48,7 +54,7 @@ bool ScorePeg::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
   // now draw a circle
   cr->save();
   cr->arc(xc, yc, lesser / 4.0, 0.0, 2.0 * M_PI); // full circle
-  //cr->set_source_rgba(0.0, 0.0, 0.8, 0.6);    // partially translucent
+
   cr->set_source_rgb(color.red, color.green, color.blue);
   cr->fill_preserve();
   cr->restore();  // back to opaque black

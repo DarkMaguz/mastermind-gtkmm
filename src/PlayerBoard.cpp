@@ -24,17 +24,19 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 {
 	set_label_align(0.25);
 
-	// Force the boxes to stay in place even if scoreButtonBox is not shown.
-	m_playerVBox.set_homogeneous(true);
-	// Set the boxes in the center.
-	m_playerVBox.set_valign(Gtk::ALIGN_CENTER);
+	m_playerVBox.set_homogeneous(true); // Force the boxes to stay in place
+																			// even if scoreButtonBox is not shown.
+	m_playerVBox.set_valign(Gtk::ALIGN_CENTER); // Set the boxes in the center.
 	m_playerVBox.pack_start(m_guessButtonBox, Gtk::PACK_SHRINK, 5);
 	m_playerVBox.pack_start(m_scoreButtonBox, Gtk::PACK_SHRINK, 5);
 
 	// Add score left to right.
-	m_scoreButtonBox.set_halign(Gtk::ALIGN_START);
+	//m_scoreButtonBox.set_halign(Gtk::ALIGN_START);
+
+	mm->signalGameStateChanged().connect(sigc::mem_fun(*this, &PlayerBoard::onGameStateChanged));
 
 	buildColorMenu();
+	createPegs();
 
 	add(m_playerVBox);
 	show_all_children();
@@ -50,6 +52,62 @@ void PlayerBoard::begin(void)
 {
 	if (m_playerName == "Computer")
 		m_playerVBox.set_visible(false);
+}
+
+void PlayerBoard::onGuessClicked(const uint8_t guessNumber)
+{
+	if (m_masterMind->gameState() != MasterMind::INPROGRESS)
+		return;
+
+	// Set the current guess needed by onSelectColor.
+	m_currentGuessPeg = guessNumber;
+
+	// Make sure the popup menu have something to attach to.
+  if(!m_pMenuPopup->get_attach_widget())
+    m_pMenuPopup->attach_to_widget(*this);
+
+  // Make the menu pop up.
+  if(m_pMenuPopup)
+    m_pMenuPopup->popup_at_widget(m_guessButtons.at(guessNumber)->guessPeg,
+    		Gdk::GRAVITY_SOUTH, Gdk::GRAVITY_NORTH, nullptr);
+}
+
+void PlayerBoard::onSelectColor(const MasterMind::color color)
+{
+	GuessButtonInfo *gButton = m_guessButtons.at(m_currentGuessPeg);
+
+	gButton->guessPeg->setColor(MasterMind::cssColorMap[color]);
+
+	MasterMind::score score = m_masterMind->guess(m_currentGuessPeg, color);
+	//m_score.push_back(score);
+	//m_scoreButtonBox.add(*Gtk::make_managed<ScorePeg>(score));
+	//m_scoreButtonBox.set_visible(true);
+	gButton->scorePeg->setScore(score);
+	//m_scoreButtonBox.show_all_children();
+}
+
+void PlayerBoard::onGameStateChanged(const uint8_t& newState)
+{
+	std::cout << "PlayerBoard::onGameStateChanged: " << std::endl;
+	std::cout << "\tplayerName: " << m_playerName << std::endl;
+	std::cout << "\tnewState: " << std::to_string(newState) << std::endl;
+
+	switch (newState) {
+		case MasterMind::STOPED:
+
+			break;
+		case MasterMind::INPROGRESS:
+
+			break;
+		case MasterMind::ENDED:
+			// Disconnect signals so that guess buttons wont react to clicks anymore.
+			/*if (!m_masterMind->guessesLeft())
+				for (auto button : m_guessButtons)
+					button->connection.disconnect();*/
+			break;
+		default:
+			break;
+	}
 }
 
 void PlayerBoard::buildColorMenu(void)
@@ -104,50 +162,26 @@ void PlayerBoard::buildColorMenu(void)
   m_pMenuPopup = std::make_unique<Gtk::Menu>(gmenu);
   if(!gmenu)
   	std::cout << "GMenu not found!" << std::endl;
+}
 
-	// Create guess buttons.
+void PlayerBoard::createPegs(void)
+{
+	// Create guess pegs and score pegs.
 	for (uint8_t i = 0; i < 5; i++)
 	{
 		GuessButtonInfo* gButton = new GuessButtonInfo;
-
-		gButton->button = Gtk::make_managed<Peg>();
-		gButton->button->set_name(m_playerName + "-guessButton" + std::to_string(i));
-		gButton->connection = gButton->button->signal_clicked()
-				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
-
 		m_guessButtons.push_back(gButton);
 
-		m_guessButtonBox.add(*gButton->button);
+		gButton->guessPeg = Gtk::make_managed<Peg>();
+		gButton->guessPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
+		gButton->connection = gButton->guessPeg->signal_clicked()
+				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
+
+		m_guessButtonBox.add(*gButton->guessPeg);
+
+		gButton->scorePeg = Gtk::make_managed<ScorePeg>();
+
+		m_scoreButtonBox.add(*gButton->scorePeg);
+		gButton->scorePeg->setScore(MasterMind::NONE);
 	}
-}
-
-void PlayerBoard::onGuessClicked(const uint8_t guessNumber)
-{
-	// Set the current guess needed by onSelectColor.
-	m_currentGuess = guessNumber;
-
-	// Make sure the popup menu have something to attach to.
-  if(!m_pMenuPopup->get_attach_widget())
-    m_pMenuPopup->attach_to_widget(*this);
-
-  // Make the menu pop up.
-  if(m_pMenuPopup)
-    m_pMenuPopup->popup_at_widget(m_guessButtons.at(guessNumber)->button,
-    		Gdk::GRAVITY_SOUTH, Gdk::GRAVITY_NORTH, nullptr);
-
-}
-
-void PlayerBoard::onSelectColor(const MasterMind::color color)
-{
-	GuessButtonInfo *gButton = m_guessButtons.at(m_currentGuess);
-
-	gButton->button->setColor(MasterMind::cssColorMap[color]);
-	// Disconnect signal so that the button wont react to clicks anymore.
-	gButton->connection.disconnect();
-
-	MasterMind::score score = m_masterMind->guess(m_currentGuess, color);
-	m_score.push_back(score);
-	m_scoreButtonBox.add(*Gtk::make_managed<ScorePeg>(score));
-	//m_scoreButtonBox.set_visible(true);
-	m_scoreButtonBox.show_all_children();
 }

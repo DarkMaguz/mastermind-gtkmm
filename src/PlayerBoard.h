@@ -10,12 +10,15 @@
 
 #include <gtkmm.h>
 #include <vector>
+
 #include "MasterMind.h"
 #include "Peg.h"
+#include "ScorePeg.h"
 
 struct GuessButtonInfo
 {
-		Peg* button;
+		Peg* guessPeg;
+		ScorePeg* scorePeg;
 		sigc::connection connection;
 };
 
@@ -31,7 +34,10 @@ class PlayerBoard : public Gtk::Frame
 		void onGuessClicked(const uint8_t guessNumber);
 		void onSelectColor(const MasterMind::color color);
 
+		void onGameStateChanged(const uint8_t& newState);
+
 		void buildColorMenu(void);
+		void createPegs(void);
 
 		Gtk::Box m_playerVBox;
 
@@ -43,7 +49,7 @@ class PlayerBoard : public Gtk::Frame
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 		std::unique_ptr<Gtk::Menu> m_pMenuPopup;
 
-		uint8_t m_currentGuess;
+		uint8_t m_currentGuessPeg;
 		Glib::ustring m_playerName;
 
 		MasterMind* m_masterMind;
