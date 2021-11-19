@@ -10,7 +10,8 @@
 ScorePeg::ScorePeg() :
 	m_score(MasterMind::NONE)
 {
-	show_all_children();
+	set_size_request(20, 20);
+	//show_all_children();
 }
 
 ScorePeg::~ScorePeg()
@@ -29,9 +30,9 @@ bool ScorePeg::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	rgbColor color;
 
 	if (m_score == MasterMind::HIT)
-		color = {1., 1., 1.};
-	else if (m_score == MasterMind::MISS)
 		color = {0., 0., 0.};
+	else if (m_score == MasterMind::MISS)
+		color = {1., 1., 1.};
 	else
 	{
 		reset_style();

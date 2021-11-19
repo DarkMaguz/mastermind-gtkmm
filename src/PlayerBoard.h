@@ -9,6 +9,7 @@
 #define SRC_PLAYERBOARD_H_
 
 #include <gtkmm.h>
+
 #include <vector>
 
 #include "MasterMind.h"
@@ -22,15 +23,18 @@ struct GuessButtonInfo
 		sigc::connection connection;
 };
 
+class Computer;
+
 class PlayerBoard : public Gtk::Frame
 {
+		friend Computer;
 	public:
 		PlayerBoard(const Glib::ustring& playerName, MasterMind *mm);
 		virtual ~PlayerBoard();
 
 		void begin(void);
 
-	private:
+	protected:
 		void onGuessClicked(const uint8_t guessNumber);
 		void onSelectColor(const MasterMind::color color);
 
@@ -42,9 +46,9 @@ class PlayerBoard : public Gtk::Frame
 		Gtk::Box m_playerVBox;
 
 		Gtk::ButtonBox m_guessButtonBox;
-		Gtk::ButtonBox m_scoreButtonBox;
+		Gtk::Box m_scoreButtonBox;
 
-		std::vector<GuessButtonInfo *> m_guessButtons;
+		std::vector<GuessButtonInfo*> m_guessButtons;
 
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 		std::unique_ptr<Gtk::Menu> m_pMenuPopup;

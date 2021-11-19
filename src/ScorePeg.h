@@ -11,6 +11,8 @@
 #include "Peg.h"
 #include "MasterMind.h"
 
+#include <gtkmm.h>
+
 struct rgbColor
 {
 	double red;
@@ -18,7 +20,7 @@ struct rgbColor
 	double blue;
 };
 
-class ScorePeg: public Peg
+class ScorePeg: public Gtk::DrawingArea
 {
 	public:
 		ScorePeg();

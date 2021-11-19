@@ -13,6 +13,7 @@
 #include <map>
 
 #include "PlayerBoard.h"
+#include "Computer.h"
 #include "MasterMind.h"
 
 class MainWindow : public Gtk::Window
@@ -24,14 +25,16 @@ class MainWindow : public Gtk::Window
 	private:
 		Gtk::Box m_mainBox;
 		Gtk::Toolbar m_toolbar;
-		Gtk::Box m_bordBox;
+		Gtk::Box m_boardBox;
 		Gtk::Statusbar m_statusbar;
 
 		typedef std::pair<const Glib::ustring, PlayerBoard*> t_player;
 
-		std::map<const Glib::ustring, PlayerBoard*>m_players;
+		std::map<const Glib::ustring, PlayerBoard*> m_players;
 
 		MasterMind m_masterMind;
+
+		Computer* m_computer;
 
 };
 
