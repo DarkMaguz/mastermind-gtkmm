@@ -24,10 +24,11 @@ struct GuessButtonInfo
 };
 
 class Computer;
-
+class Human;
 class PlayerBoard : public Gtk::Frame
 {
 		friend Computer;
+		friend Human;
 	public:
 		PlayerBoard(const Glib::ustring& playerName, MasterMind *mm);
 		virtual ~PlayerBoard();
@@ -41,7 +42,7 @@ class PlayerBoard : public Gtk::Frame
 		void onGameStateChanged(const uint8_t& newState);
 
 		void buildColorMenu(void);
-		void createPegs(void);
+		virtual void createPegs(void);
 
 		Gtk::Box m_playerVBox;
 

@@ -40,7 +40,6 @@ class MasterMind
 		};
 
 		typedef std::vector<color> t_colorSequnence;
-
 		static std::array<const std::string, 6> const cssColorMap;
 
 	public:

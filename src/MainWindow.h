@@ -14,6 +14,7 @@
 
 #include "PlayerBoard.h"
 #include "Computer.h"
+#include "Human.h"
 #include "MasterMind.h"
 
 class MainWindow : public Gtk::Window
@@ -28,9 +29,9 @@ class MainWindow : public Gtk::Window
 		Gtk::Box m_boardBox;
 		Gtk::Statusbar m_statusbar;
 
-		typedef std::pair<const Glib::ustring, PlayerBoard*> t_player;
+		typedef std::pair<const Glib::ustring, Human*> t_player;
 
-		std::map<const Glib::ustring, PlayerBoard*> m_players;
+		std::map<const Glib::ustring, Human*> m_players;
 
 		MasterMind m_masterMind;
 

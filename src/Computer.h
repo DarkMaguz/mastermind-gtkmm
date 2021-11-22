@@ -19,7 +19,7 @@ class Computer: public PlayerBoard
 
 	private:
 
-		virtual void createPegs(void);
+		void createPegs(void);
 };
 
 #endif /* SRC_COMPUTER_H_ */

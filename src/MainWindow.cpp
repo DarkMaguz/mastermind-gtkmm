@@ -22,7 +22,7 @@ MainWindow::MainWindow() :
 	//t_player computerPlayer = t_player("Computer", Gtk::make_managed<Computer>("Computer", &m_masterMind));
 	//t_player computerPlayer = t_player("Computer", Gtk::make_managed<Computer>("Computer", &m_masterMind));
 	m_computer = Gtk::make_managed<Computer>("Computer", &m_masterMind);
-	t_player humanPlayer = t_player("human", Gtk::make_managed<PlayerBoard>("human", &m_masterMind));
+	t_player humanPlayer = t_player("human", Gtk::make_managed<Human>("human", &m_masterMind));
 
 	//m_players.insert(computerPlayer);
 	m_players.insert(humanPlayer);

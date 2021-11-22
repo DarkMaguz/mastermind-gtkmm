@@ -27,6 +27,7 @@ MasterMind::MasterMind(t_colorSequnence& masterSequence) :
 {
 	if (masterSequence.size() != 5)
 		throw "Wrong sized sequence!\n\tGot " + std::to_string(masterSequence.size()) + " expected 5";
+	changeState(INPROGRESS);
 }
 
 MasterMind::~MasterMind()

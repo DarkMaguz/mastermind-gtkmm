@@ -11,13 +11,11 @@
 Computer::Computer(const Glib::ustring& playerName, MasterMind *mm) :
 	PlayerBoard(playerName, mm)
 {
-	// TODO Auto-generated constructor stub
-	
+	createPegs();
 }
 
 Computer::~Computer()
 {
-	// TODO Auto-generated destructor stub
 }
 
 void Computer::createPegs(void)
@@ -30,14 +28,7 @@ void Computer::createPegs(void)
 
 		gButton->guessPeg = Gtk::make_managed<Peg>();
 		gButton->guessPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
-		gButton->connection = gButton->guessPeg->signal_clicked()
-				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
 
 		m_guessButtonBox.add(*gButton->guessPeg);
-
-		gButton->scorePeg = Gtk::make_managed<ScorePeg>();
-
-		m_scoreButtonBox.add(*gButton->scorePeg);
-		gButton->scorePeg->setScore(MasterMind::NONE);
 	}
 }
