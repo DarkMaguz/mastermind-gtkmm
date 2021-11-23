@@ -83,6 +83,11 @@ sigc::signal<void, MasterMind::state> MasterMind::signalGameStateChanged(void)
 	return m_signalGameStateChanged;
 }
 
+const MasterMind::t_colorSequnence& MasterMind::getMasterSequence(void) const
+{
+	return m_masterSequence;
+}
+
 void MasterMind::changeState(const state& newState)
 {
 	m_gameState = newState;

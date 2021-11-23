@@ -55,6 +55,9 @@ class MasterMind
 
 		sigc::signal<void, state> signalGameStateChanged(void);
 
+	protected:
+		const t_colorSequnence& getMasterSequence(void) const;
+
 	private:
 		void changeState(const state& newState);
 		void genNewMasterSequence(void);
