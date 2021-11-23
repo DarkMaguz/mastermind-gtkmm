@@ -15,8 +15,11 @@
 
 #include <sigc++/sigc++.h>
 
+class Computer;
+
 class MasterMind
 {
+		friend Computer;
 	public:
 		enum color {
 			RED = 0,
