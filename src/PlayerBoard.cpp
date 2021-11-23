@@ -26,8 +26,6 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 {
 	set_label_align(0.25);
 
-	m_playerVBox.set_homogeneous(true); // Force the boxes to stay in place
-																			// even if scoreButtonBox is not shown.
 	m_playerVBox.set_valign(Gtk::ALIGN_CENTER); // Set the boxes in the center.
 	m_playerVBox.pack_start(m_guessButtonBox, Gtk::PACK_START, 5);
 	m_playerVBox.pack_start(m_scoreButtonBox, Gtk::PACK_START, 5);
