@@ -43,6 +43,7 @@ class PlayerBoard : public Gtk::Frame
 
 		void buildColorMenu(void);
 		virtual void createPegs(void);
+		virtual void revealCode(void) {};
 
 		Gtk::Box m_playerVBox;
 

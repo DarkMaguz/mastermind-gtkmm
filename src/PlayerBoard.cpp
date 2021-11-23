@@ -104,6 +104,7 @@ void PlayerBoard::onGameStateChanged(const uint8_t& newState)
 
 			break;
 		case MasterMind::ENDED:
+			revealCode();
 			// Disconnect signals so that guess buttons wont react to clicks anymore.
 			/*if (!m_masterMind->guessesLeft())
 				for (auto button : m_guessButtons)
