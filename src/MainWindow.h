@@ -23,11 +23,19 @@ class MainWindow : public Gtk::Window
 		MainWindow();
 		virtual ~MainWindow();
 
+	protected:
+		void buildToolbar(void);
+		void onToolbarNewGame(void);
+		void onToolbarQuit(void);
+
+		void onGameStateChanged(const uint8_t& newState);
+
 	private:
 		Gtk::Box m_mainBox;
-		Gtk::Toolbar m_toolbar;
+		Gtk::Toolbar *m_toolbar;
 		Gtk::Box m_boardBox;
 		Gtk::Statusbar m_statusbar;
+		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 
 		typedef std::pair<const Glib::ustring, Human*> t_player;
 

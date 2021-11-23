@@ -117,7 +117,7 @@ void PlayerBoard::buildColorMenu(void)
 
 	// Load popup menu template from xml file.
 	Glib::ustring uiColorMenu;
-	auto ioc = Glib::IOChannel::create_from_file("color-menu.xml", "r");
+	auto ioc = Glib::IOChannel::create_from_file("gui.xml", "r");
 	ioc->read_to_end(uiColorMenu);
 	ioc->close();
 
