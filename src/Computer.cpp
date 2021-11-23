@@ -23,22 +23,23 @@ void Computer::createPegs(void)
 	// Create guess pegs and score pegs.
 	for (uint8_t i = 0; i < 5; i++)
 	{
-		GuessButtonInfo* gButton = new GuessButtonInfo;
+		PegInfo* gButton = new PegInfo;
 		m_guessButtons.push_back(gButton);
 
-		gButton->guessPeg = Gtk::make_managed<Peg>();
-		gButton->guessPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
+		gButton->colorPeg = Gtk::make_managed<Peg>();
+		gButton->colorPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
 
-		m_guessButtonBox.add(*gButton->guessPeg);
+		m_guessButtonBox.add(*gButton->colorPeg);
 	}
 }
 
 void Computer::revealCode(void)
 {
+	// Loop through the guess buttons and assign the secret color code to each peg.
 	auto colorIt = m_masterMind->getMasterSequence().begin();
 	for (auto pegIt : m_guessButtons)
 	{
-		pegIt->guessPeg->setColor(MasterMind::cssColorMap[*colorIt]);
+		pegIt->colorPeg->setColor(MasterMind::cssColorMap[*colorIt]);
 		colorIt++;
 	}
 }

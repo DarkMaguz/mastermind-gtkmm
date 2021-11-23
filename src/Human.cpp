@@ -24,19 +24,19 @@ void Human::createPegs(void)
 	// Create guess pegs and score pegs.
 	for (uint8_t i = 0; i < 5; i++)
 	{
-		GuessButtonInfo* gButton = new GuessButtonInfo;
+		PegInfo* gButton = new PegInfo;
 		m_guessButtons.push_back(gButton);
 
-		gButton->guessPeg = Gtk::make_managed<Peg>();
-		gButton->guessPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
-		gButton->connection = gButton->guessPeg->signal_clicked()
+		gButton->colorPeg = Gtk::make_managed<Peg>();
+		gButton->colorPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
+		gButton->connection = gButton->colorPeg->signal_clicked()
 				.connect(sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onGuessClicked), i));
 
-		m_guessButtonBox.add(*gButton->guessPeg);
+		m_guessButtonBox.add(*gButton->colorPeg);
 
 		gButton->scorePeg = Gtk::make_managed<ScorePeg>();
 
-		m_scoreButtonBox.add(*gButton->scorePeg);
+		m_scorePegBox.add(*gButton->scorePeg);
 		gButton->scorePeg->setScore(MasterMind::NONE);
 	}
 }

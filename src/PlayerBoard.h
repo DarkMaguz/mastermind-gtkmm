@@ -16,9 +16,9 @@
 #include "Peg.h"
 #include "ScorePeg.h"
 
-struct GuessButtonInfo
+struct PegInfo
 {
-		Peg* guessPeg;
+		Peg* colorPeg;
 		ScorePeg* scorePeg;
 		sigc::connection connection;
 };
@@ -42,15 +42,15 @@ class PlayerBoard : public Gtk::Frame
 		void onGameStateChanged(const uint8_t& newState);
 
 		void buildColorMenu(void);
-		virtual void createPegs(void);
+		virtual void createPegs(void) {};
 		virtual void revealCode(void) {};
 
 		Gtk::Box m_playerHBox;
 
 		Gtk::ButtonBox m_guessButtonBox;
-		Gtk::Box m_scoreButtonBox;
+		Gtk::Box m_scorePegBox;
 
-		std::vector<GuessButtonInfo*> m_guessButtons;
+		std::vector<PegInfo*> m_guessButtons;
 
 		Glib::RefPtr<Gtk::Builder> m_refBuilder;
 		std::unique_ptr<Gtk::Menu> m_pMenuPopup;
