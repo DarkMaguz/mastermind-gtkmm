@@ -45,7 +45,7 @@ class PlayerBoard : public Gtk::Frame
 		virtual void createPegs(void);
 		virtual void revealCode(void) {};
 
-		Gtk::Box m_playerVBox;
+		Gtk::Box m_playerHBox;
 
 		Gtk::ButtonBox m_guessButtonBox;
 		Gtk::Box m_scoreButtonBox;

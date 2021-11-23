@@ -16,7 +16,7 @@
 
 PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 	Gtk::Frame(playerName),
-	m_playerVBox(Gtk::ORIENTATION_HORIZONTAL),
+	m_playerHBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_guessButtonBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_scoreButtonBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_refBuilder(Gtk::Builder::create()),
@@ -26,9 +26,9 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 {
 	set_label_align(0.25);
 
-	m_playerVBox.set_valign(Gtk::ALIGN_CENTER); // Set the boxes in the center.
-	m_playerVBox.pack_start(m_guessButtonBox, Gtk::PACK_START, 5);
-	m_playerVBox.pack_start(m_scoreButtonBox, Gtk::PACK_START, 5);
+	m_playerHBox.set_valign(Gtk::ALIGN_CENTER); // Set the boxes in the center.
+	m_playerHBox.pack_start(m_guessButtonBox, Gtk::PACK_START, 5);
+	m_playerHBox.pack_start(m_scoreButtonBox, Gtk::PACK_START, 5);
 
 	// Add score left to right.
 	m_scoreButtonBox.set_halign(Gtk::ALIGN_START);
@@ -38,7 +38,7 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 	buildColorMenu();
 	//if (m_playerName != "Computer")
 
-	add(m_playerVBox);
+	add(m_playerHBox);
 	show_all_children();
 }
 
