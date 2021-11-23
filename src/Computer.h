@@ -18,8 +18,8 @@ class Computer: public PlayerBoard
 		virtual ~Computer();
 
 	private:
-
 		void createPegs(void);
+		void revealCode(void);
 };
 
 #endif /* SRC_COMPUTER_H_ */

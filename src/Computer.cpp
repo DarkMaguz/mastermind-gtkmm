@@ -32,3 +32,13 @@ void Computer::createPegs(void)
 		m_guessButtonBox.add(*gButton->guessPeg);
 	}
 }
+
+void Computer::revealCode(void)
+{
+	auto colorIt = m_masterMind->getMasterSequence().begin();
+	for (auto pegIt : m_guessButtons)
+	{
+		pegIt->guessPeg->setColor(MasterMind::cssColorMap[*colorIt]);
+		colorIt++;
+	}
+}
