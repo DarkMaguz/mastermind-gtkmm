@@ -10,8 +10,8 @@
 #include <algorithm>
 #include <iostream>
 
-std::array<const std::string, 6> const MasterMind::cssColorMap = {
-			"red", "green", "blue", "yellow", "black", "white"
+std::array<const std::string, 7> const MasterMind::cssColorMap = {
+			"#", "red", "green", "blue", "yellow", "black", "white"
 		};
 
 MasterMind::MasterMind() :
@@ -41,22 +41,28 @@ void MasterMind::restart(void)
 	changeState(INPROGRESS);
 }
 
-const MasterMind::score MasterMind::guess(const uint8_t& position, const color guess)
+const MasterMind::t_score MasterMind::guess(const t_colorSequnence& guess)
 {
+	t_score result;
 	if (m_gameState != INPROGRESS)
 		throw "There is no game currently in progress!";
 
-	if (position > 4)
-		throw "Invalid position!\n\tGot " + std::to_string(position) + " expected position to be in range 0-4";
+	for (auto it = guess.begin(); it < guess.end(); it++)
+		result.push_back(evaluateGuess(it - guess.begin(), *it));
 
-	const bool hasColor = std::any_of(m_masterSequence.begin(),
-			m_masterSequence.end(),
-			[&](color c){return c == guess;});
-
+	t_score score;
 	if (guessesLeft() <= 0)
 		changeState(ENDED);
 
 	m_guessCouter++;
+	return result;
+}
+
+const MasterMind::score MasterMind::evaluateGuess(const uint8_t& position, const color& guess) const
+{
+	const bool hasColor = std::any_of(m_masterSequence.begin(),
+			m_masterSequence.end(),
+			[&](color c){return c == guess;});
 
 	if (hasColor) {
 		if (m_masterSequence.at(position) == guess)
@@ -67,6 +73,33 @@ const MasterMind::score MasterMind::guess(const uint8_t& position, const color g
 		return score::NONE;
 	}
 }
+
+//const MasterMind::score MasterMind::guess(const uint8_t& position, const color guess)
+//{
+//	if (m_gameState != INPROGRESS)
+//		throw "There is no game currently in progress!";
+//
+//	if (position > 4)
+//		throw "Invalid position!\n\tGot " + std::to_string(position) + " expected position to be in range 0-4";
+//
+//	const bool hasColor = std::any_of(m_masterSequence.begin(),
+//			m_masterSequence.end(),
+//			[&](color c){return c == guess;});
+//
+//	if (guessesLeft() <= 0)
+//		changeState(ENDED);
+//
+//	m_guessCouter++;
+//
+//	if (hasColor) {
+//		if (m_masterSequence.at(position) == guess)
+//			return score::HIT;
+//		else
+//			return score::MISS;
+//	} else {
+//		return score::NONE;
+//	}
+//}
 
 const int8_t MasterMind::guessesLeft(void) const
 {
@@ -99,7 +132,7 @@ void MasterMind::genNewMasterSequence(void)
 	m_masterSequence.clear();
 
 	std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution(0, 4);
+	std::uniform_int_distribution<int> distribution(1, 5);
 
 	for (int i = 0; i < 5; i++)
 		m_masterSequence.push_back(color(distribution(generator)));

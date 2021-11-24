@@ -45,7 +45,10 @@ class PlayerBoard : public Gtk::Frame
 		virtual void createPegs(void) {};
 		virtual void revealCode(void) {};
 
+		Gtk::Box m_playerVBox;
 		Gtk::Box m_playerHBox;
+
+		Gtk::Button m_submitGuessButton;
 
 		Gtk::ButtonBox m_guessButtonBox;
 		Gtk::Box m_scorePegBox;
@@ -60,7 +63,7 @@ class PlayerBoard : public Gtk::Frame
 
 		MasterMind* m_masterMind;
 
-		std::vector<MasterMind::score> m_score;
+		std::vector<MasterMind::t_score> m_score;
 };
 
 #endif /* SRC_PLAYERBOARD_H_ */

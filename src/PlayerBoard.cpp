@@ -16,7 +16,9 @@
 
 PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 	Gtk::Frame(playerName),
+	m_playerVBox(Gtk::ORIENTATION_VERTICAL),
 	m_playerHBox(Gtk::ORIENTATION_HORIZONTAL),
+	m_submitGuessButton("Submit guess"),
 	m_guessButtonBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_scorePegBox(Gtk::ORIENTATION_HORIZONTAL),
 	m_refBuilder(Gtk::Builder::create()),
@@ -30,6 +32,9 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 	m_playerHBox.pack_start(m_guessButtonBox, Gtk::PACK_START, 5);
 	m_playerHBox.pack_start(m_scorePegBox, Gtk::PACK_START, 5);
 
+	m_playerVBox.pack_start(m_submitGuessButton, false, false);
+	m_playerVBox.pack_start(m_playerHBox, Gtk::PACK_SHRINK);
+
 	// Add score pegs from left to right.
 	m_scorePegBox.set_halign(Gtk::ALIGN_START);
 
@@ -38,7 +43,8 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 
 	buildColorMenu();
 
-	add(m_playerHBox);
+
+	add(m_playerVBox);
 	show_all_children();
 }
 
@@ -53,7 +59,7 @@ void PlayerBoard::reset(void)
 	m_score.clear();
 	for (auto peg : m_guessButtons)
 	{
-		peg->colorPeg->setColor("");
+		peg->colorPeg->setColor(MasterMind::VOID);
 		if (peg->scorePeg)
 			peg->scorePeg->setScore(MasterMind::NONE);
 	}
@@ -61,7 +67,7 @@ void PlayerBoard::reset(void)
 
 void PlayerBoard::onGuessClicked(const uint8_t guessNumber)
 {
-	// Do not display color menu if the game is not in progeress.
+	// Do not display color menu if the game is not in progress.
 	if (m_masterMind->gameState() != MasterMind::INPROGRESS)
 		return;
 
@@ -80,12 +86,13 @@ void PlayerBoard::onGuessClicked(const uint8_t guessNumber)
 
 void PlayerBoard::onSelectColor(const MasterMind::color color)
 {
+	std::cout << "onSelectColor: " << color << std::endl;
 	PegInfo *gButton = m_guessButtons.at(m_currentGuessPeg);
 
-	gButton->colorPeg->setColor(MasterMind::cssColorMap[color]);
+	gButton->colorPeg->setColor(color);
 
-	MasterMind::score score = m_masterMind->guess(m_currentGuessPeg, color);
-	gButton->scorePeg->setScore(score);
+	//MasterMind::score score = m_masterMind->guess(m_currentGuessPeg, color);
+	//gButton->scorePeg->setScore(score);
 }
 
 void PlayerBoard::onGameStateChanged(const uint8_t& newState)
@@ -114,7 +121,7 @@ void PlayerBoard::buildColorMenu(void)
 {
 	// Connect popup menu action signals to onSelectColor parsing the chosen color.
 	auto refActionGroup = Gio::SimpleActionGroup::create();
-	for (uint8_t i = 0; i < MasterMind::cssColorMap.size(); i++)
+	for (uint8_t i = 1; i < MasterMind::cssColorMap.size(); i++)
 		refActionGroup->add_action(MasterMind::cssColorMap[i],
 				sigc::bind(sigc::mem_fun(*this, &PlayerBoard::onSelectColor), MasterMind::color(i)));
 	insert_action_group("color-menu", refActionGroup);
@@ -127,7 +134,7 @@ void PlayerBoard::buildColorMenu(void)
 
 	// Add items to the menu template.
 	Glib::ustring uiColorMenuItems;
-	for (uint8_t i = 0; i < MasterMind::cssColorMap.size(); i++)
+	for (uint8_t i = 1; i < MasterMind::cssColorMap.size(); i++)
 	{
 		auto color = MasterMind::cssColorMap[i];
 		uiColorMenuItems.append(

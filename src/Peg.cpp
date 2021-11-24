@@ -9,7 +9,8 @@
 
 #include <iostream>
 
-Peg::Peg()
+Peg::Peg() :
+	m_color(MasterMind::color::VOID)
 {
 	show_all_children();
 }
@@ -45,10 +46,17 @@ Peg::~Peg()
 //	return false;
 //}
 
-void Peg::setColor(const Glib::ustring& color)
+const MasterMind::color& Peg::getColor(void) const
 {
+	return m_color;
+}
+
+void Peg::setColor(const MasterMind::color& color)
+{
+	bool hasColor = color != MasterMind::color::VOID;
+	m_color = color;
 	// Create CSS string.
-	Glib::ustring bgColor = !color.empty() ? " background-color: " + color +";" : "";
+	Glib::ustring bgColor = hasColor ? " background-color: " + MasterMind::cssColorMap[color] +";" : "";
 	Glib::ustring css = Glib::ustring::compose(
 			"#%1.mmClass {background-image: none;%2}",
 			get_name(), bgColor);
@@ -63,7 +71,7 @@ void Peg::setColor(const Glib::ustring& color)
 			cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	// Add or remove the style depending on whether or not a color was set.
-	if (!color.empty())
+	if (hasColor)
 		styleContext->add_class("mmClass");
 	else
 		styleContext->remove_class("mmClass");

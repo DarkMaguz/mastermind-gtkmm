@@ -29,7 +29,7 @@ class ScorePeg: public Gtk::DrawingArea
 		void setScore(const MasterMind::score& score);
 
 	protected:
-		virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
+		bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
 	private:
 		MasterMind::score m_score;

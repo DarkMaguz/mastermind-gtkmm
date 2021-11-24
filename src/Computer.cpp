@@ -12,6 +12,7 @@ Computer::Computer(const Glib::ustring& playerName, MasterMind *mm) :
 	PlayerBoard(playerName, mm)
 {
 	createPegs();
+	m_playerVBox.remove(m_submitGuessButton);
 }
 
 Computer::~Computer()
@@ -28,6 +29,7 @@ void Computer::createPegs(void)
 
 		gButton->scorePeg = nullptr;
 		gButton->colorPeg = Gtk::make_managed<Peg>();
+		// Make the colorPeg identifiable.
 		gButton->colorPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
 
 		m_guessButtonBox.add(*gButton->colorPeg);
@@ -40,7 +42,7 @@ void Computer::revealCode(void)
 	auto colorIt = m_masterMind->getMasterSequence().begin();
 	for (auto pegIt : m_guessButtons)
 	{
-		pegIt->colorPeg->setColor(MasterMind::cssColorMap[*colorIt]);
+		pegIt->colorPeg->setColor(*colorIt);
 		colorIt++;
 	}
 }

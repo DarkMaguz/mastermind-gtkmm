@@ -20,6 +20,8 @@ class Human: public PlayerBoard
 
 	private:
 		void createPegs(void);
+
+		void onSubmitGuess(void);
 };
 
 #endif /* SRC_HUMAN_H_ */

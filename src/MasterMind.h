@@ -22,7 +22,8 @@ class MasterMind
 		friend Computer;
 	public:
 		enum color {
-			RED = 0,
+			VOID = 0,
+			RED,
 			GREEN,
 			BLUE,
 			YELLOW,
@@ -43,7 +44,8 @@ class MasterMind
 		};
 
 		typedef std::vector<color> t_colorSequnence;
-		static std::array<const std::string, 6> const cssColorMap;
+		typedef std::vector<MasterMind::score> t_score;
+		static std::array<const std::string, 7> const cssColorMap;
 
 	public:
 		MasterMind();
@@ -51,7 +53,7 @@ class MasterMind
 		virtual ~MasterMind();
 
 		void restart(void);
-		const score guess(const uint8_t& position, const color guess);
+		const t_score guess(const t_colorSequnence& guess);
 
 		const int8_t guessesLeft(void) const;
 		const state gameState(void) const;
@@ -64,6 +66,7 @@ class MasterMind
 	private:
 		void changeState(const state& newState);
 		void genNewMasterSequence(void);
+		const score evaluateGuess(const uint8_t& position, const color& guess) const;
 
 		state m_gameState;
 		t_colorSequnence m_masterSequence;
