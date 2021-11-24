@@ -47,16 +47,24 @@ Peg::~Peg()
 
 void Peg::setColor(const Glib::ustring& color)
 {
-	auto styleContext = get_style_context();
-
-	std::cout << "get_name: " << get_name() << std::endl;
+	// Create CSS string.
+	Glib::ustring bgColor = !color.empty() ? " background-color: " + color +";" : "";
+	Glib::ustring css = Glib::ustring::compose(
+			"#%1.mmClass {background-image: none;%2}",
+			get_name(), bgColor);
 
   // Create CSS prvider.
-	auto css = Gtk::CssProvider::create();
-	css->load_from_data("#" + get_name() +
-			"{background-image: none; background-color: " + color + ";}");
+	auto cssProvider = Gtk::CssProvider::create();
+	cssProvider->load_from_data(css);
 
 	// Set the chosen color.
+	auto styleContext = get_style_context();
 	styleContext->add_provider_for_screen(Gdk::Screen::get_default(),
-			css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+			cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+	// Add or remove the style depending on whether or not a color was set.
+	if (!color.empty())
+		styleContext->add_class("mmClass");
+	else
+		styleContext->remove_class("mmClass");
 }

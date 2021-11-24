@@ -26,6 +26,7 @@ void Computer::createPegs(void)
 		PegInfo* gButton = new PegInfo;
 		m_guessButtons.push_back(gButton);
 
+		gButton->scorePeg = nullptr;
 		gButton->colorPeg = Gtk::make_managed<Peg>();
 		gButton->colorPeg->set_name(m_playerName + "-guessButton" + std::to_string(i));
 

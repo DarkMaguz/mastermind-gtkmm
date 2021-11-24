@@ -89,7 +89,13 @@ void MainWindow::onToolbarNewGame(void)
 	if (m_masterMind.gameState() == MasterMind::INPROGRESS)
 	{
 		// Ask user if they really would like to start a new game and thus terminate the existing one.
-		std::cout << "start new game?" << std::endl;
+		Gtk::MessageDialog dialog(*this,
+				"Are you sure about starting a new game and thus loosing the progress of the current game?",
+				false,
+				Gtk::MESSAGE_QUESTION,
+				Gtk::BUTTONS_OK_CANCEL);
+		if (dialog.run() == Gtk::RESPONSE_OK)
+			m_masterMind.restart();
 	}
 	else
 	{

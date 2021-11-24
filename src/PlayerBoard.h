@@ -33,7 +33,7 @@ class PlayerBoard : public Gtk::Frame
 		PlayerBoard(const Glib::ustring& playerName, MasterMind *mm);
 		virtual ~PlayerBoard();
 
-		void begin(void);
+		void reset(void);
 
 	protected:
 		void onGuessClicked(const uint8_t guessNumber);

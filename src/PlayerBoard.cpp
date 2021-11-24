@@ -26,7 +26,7 @@ PlayerBoard::PlayerBoard(const Glib::ustring& playerName, MasterMind *mm) :
 {
 	set_label_align(0.25);
 
-	m_playerHBox.set_valign(Gtk::ALIGN_CENTER); // Set the boxes in the center.
+	//m_playerHBox.set_valign(Gtk::ALIGN_START); // Set the boxes in the center.
 	m_playerHBox.pack_start(m_guessButtonBox, Gtk::PACK_START, 5);
 	m_playerHBox.pack_start(m_scorePegBox, Gtk::PACK_START, 5);
 
@@ -48,11 +48,14 @@ PlayerBoard::~PlayerBoard()
 		delete button;
 }
 
-void PlayerBoard::begin(void)
+void PlayerBoard::reset(void)
 {
-	if (m_playerName == "Computer")
+	m_score.clear();
+	for (auto peg : m_guessButtons)
 	{
-		//m_playerVBox.set_visible(false);
+		peg->colorPeg->setColor("");
+		if (peg->scorePeg)
+			peg->scorePeg->setScore(MasterMind::NONE);
 	}
 }
 
@@ -96,7 +99,8 @@ void PlayerBoard::onGameStateChanged(const uint8_t& newState)
 
 			break;
 		case MasterMind::INPROGRESS:
-
+			// A new game has to be started.
+			reset();
 			break;
 		case MasterMind::ENDED:
 			revealCode();
